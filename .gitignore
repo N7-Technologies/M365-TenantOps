@@ -1,0 +1,61 @@
+# ==========================================
+# N7 Technologies - M365 TenantOps
+# Git Security Exclusions
+# ==========================================
+
+# Private client configuration
+clients.psd1
+00-clients.psd1
+*clients.private.psd1
+*clients.local.psd1
+!clients.example.psd1
+
+# Credentials and secrets
+*.pfx
+*.p12
+*.pem
+*.key
+*.secret
+*.secrets
+*.credentials
+*.token
+*.tokens
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Authentication caches
+.msal/
+.m365-auth/
+.auth/
+.token-cache/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*.old
+*.transcript
+
+# Reports and exports
+Reports/
+Exports/
+Output/
+*.csv
+
+# PowerShell user-specific files
+*.ps1xml.user
+
+# VS Code local settings
+.vscode/
+.history/
+
+# Operating system files
+Thumbs.db
+.DS_Store
+
+# Temporary development files
+scratch/
+temp/

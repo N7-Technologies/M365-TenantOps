@@ -1,0 +1,44 @@
+name: PowerShell Validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  syntax-check:
+    name: PowerShell Syntax Check
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Validate PowerShell syntax
+        shell: pwsh
+        run: |
+          $files = @(Get-ChildItem -Path . -Filter "*.ps1" -Recurse -File)
+          $failed = $false
+
+          foreach ($file in $files) {
+              $errors = $null
+              $null = [System.Management.Automation.Language.Parser]::ParseFile($file.FullName, [ref]$null, [ref]$errors)
+
+              if ($errors.Count -gt 0) {
+                  Write-Host "[FAIL] $($file.Name)" -ForegroundColor Red
+                  $errors | Format-List
+                  $failed = $true
+              }
+              else {
+                  Write-Host "[PASS] $($file.Name)" -ForegroundColor Green
+              }
+          }
+
+          if ($failed) {
+              throw "One or more PowerShell scripts contain syntax errors."
+          }
+
+          Write-Host "PowerShell syntax validation completed successfully."
